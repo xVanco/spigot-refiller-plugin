@@ -1,5 +1,7 @@
 package github.xvanco.refiller;
 
+import org.bukkit.Material;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,7 +13,7 @@ public class RefillerListener implements Listener {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent e) {
         ItemStack itemInHand = e.getItemInHand();
-        if (itemInHand.getAmount() < 1) {
+        if (itemInHand.getType().isBlock() && itemInHand.getAmount() <= 1) {
             Player p = e.getPlayer();
             switchItemInHand(p, itemInHand);
         }
@@ -25,13 +27,12 @@ public class RefillerListener implements Listener {
     }
 
     private void switchItemInHand(Player p, ItemStack im){
-        if (p.getInventory().contains(im)) {
+        if (p.getInventory().contains(im.getType())) {
             final ItemStack[] contents = p.getInventory().getContents();
             for (int i = 0; i < contents.length; i++) {
-                if (contents[i].getType() == im.getType()) {
+                if (contents[i] != null && im.getType() == contents[i].getType() && im.getData() == contents[i].getData() && p.getInventory().getHeldItemSlot() != i) {
                     p.getInventory().setItemInMainHand(contents[i]);
                     p.getInventory().setItem(i, null);
-                    p.sendMessage("Ich habe mal nachgefüllt");
                     break;
                 }
             }

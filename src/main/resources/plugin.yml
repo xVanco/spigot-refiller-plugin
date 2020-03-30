@@ -1,4 +1,5 @@
-name: RefillerPlugin
-version: 0.1
+name: Refiller
+version: 0.1.0
 main: github.xvanco.refiller.RefillerPlugin
 description: Used for extend refill mechanics
+api-version: 1.15.2
