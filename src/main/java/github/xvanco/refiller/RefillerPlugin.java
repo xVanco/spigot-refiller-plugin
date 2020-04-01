@@ -6,11 +6,11 @@ public class RefillerPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         getServer().getPluginManager().registerEvents(new RefillerListener(), this);
-        getLogger().info("Refiller enabled");
+        getLogger().info("Enabled");
     }
 
     @Override
     public void onDisable() {
-        getLogger().info("Refiller disabled");
+        getLogger().info("Disabled");
     }
 }

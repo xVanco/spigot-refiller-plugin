@@ -15,7 +15,7 @@ public class RefillerListener implements Listener {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent e) {
         Player p = e.getPlayer();
-        boolean inMainHand = inMainHand(e.getBlockPlaced().getType(), p);
+        boolean inMainHand = inMainHand(new ItemStack(e.getBlockPlaced().getType()), p);
         ItemStack itemInHand = e.getItemInHand();
         if (itemInHand.getType().isBlock() && itemInHand.getAmount() <= 1) {
             refillItemInHand(p, itemInHand, false, inMainHand);
@@ -26,10 +26,10 @@ public class RefillerListener implements Listener {
     public void onPlayerInteractEvent(PlayerInteractEvent e) throws InterruptedException {
         if (!e.isBlockInHand() && e.getAction() == Action.RIGHT_CLICK_BLOCK && e.getClickedBlock().getType() == Material.FARMLAND) {
             Player p = e.getPlayer();
-            boolean inMainHand = inMainHand(e.getMaterial(), p);
+            boolean inMainHand = inMainHand(new ItemStack(e.getMaterial()), p);
             ItemStack itemInHand = null;
             if (inMainHand) itemInHand = p.getInventory().getItemInMainHand();
-            else itemInHand = p.getInventory().getItemInMainHand();
+            else itemInHand = p.getInventory().getItemInOffHand();
             if (itemInHand.getAmount() <= 1) {
                 refillItemInHand(p, itemInHand, true, inMainHand);
             }
@@ -47,19 +47,19 @@ public class RefillerListener implements Listener {
     public void onPlayerItemConsume(PlayerItemConsumeEvent e) {
         final ItemStack eatenItem = e.getItem();
         final Player p = e.getPlayer();
-        boolean inMainHand = inMainHand(eatenItem.getType(), p);
+        boolean inMainHand = inMainHand(eatenItem, p);
         if (eatenItem.getAmount() <= 1) {
             refillItemInHand(p, eatenItem, false, inMainHand);
         }
     }
 
-    private void refillItemInHand(Player p, ItemStack im, boolean addOne, boolean inMainHand){
-        if (p.getInventory().contains(im.getType())) {
+    private void refillItemInHand(Player p, ItemStack is, boolean addOne, boolean inMainHand){
+        if (p.getInventory().contains(is.getType())) {
             final ItemStack[] contents = p.getInventory().getContents();
             for (int i = 0; i < contents.length; i++) {
                 // check if content types are equal (also on different block variants)
-                if (contents[i] != null && im.getType() == contents[i].getType() &&
-                        im.getData() == contents[i].getData() &&
+                if (contents[i] != null && is.getType() == contents[i].getType() &&
+                        is.getData() == contents[i].getData() &&
                         p.getInventory().getHeldItemSlot() != i) {
                     // for playerinteractevent
                     if (addOne) contents[i].setAmount(contents[i].getAmount() + 1);
@@ -72,7 +72,8 @@ public class RefillerListener implements Listener {
         }
     }
 
-    private boolean inMainHand(Material m, Player p) {
-        return m == p.getInventory().getItemInMainHand().getType();
+    private boolean inMainHand(ItemStack is, Player p) {
+        ItemStack mainHand = p.getInventory().getItemInMainHand();
+        return is.getType() == mainHand.getType() && is.getData() == mainHand.getData();
     }
 }
