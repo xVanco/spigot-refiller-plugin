@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>github.xvanco.refiller</groupId>
-    <artifactId>refiller</artifactId>
-    <version>0.1.0</version>
+    <artifactId>Refiller</artifactId>
+    <version>0.2.0</version>
 
     <repositories>
         <repository>
@@ -27,4 +27,13 @@
         <maven.compiler.source>1.6</maven.compiler.source>
         <maven.compiler.target>1.6</maven.compiler.target>
     </properties>
+    <build>
+        <resources>
+            <resource>
+                <!-- Filter for version name in properties -->
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
 </project>

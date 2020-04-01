@@ -1,5 +1,6 @@
-name: Refiller
-version: 0.1.0
+name: "${project.artifactId}"
+version: "${project.version}"
 main: github.xvanco.refiller.RefillerPlugin
-description: Used for extend refill mechanics
+description: Used to create refill mechanics
+author: xvanco
 api-version: 1.15
