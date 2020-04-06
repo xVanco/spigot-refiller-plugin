@@ -15,7 +15,7 @@ public class RefillerListener implements Listener {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent e) {
         Player p = e.getPlayer();
-        boolean inMainHand = inMainHand(new ItemStack(e.getBlockPlaced().getType()), p);
+        boolean inMainHand = inMainHand(e.getItemInHand(), p);
         ItemStack itemInHand = e.getItemInHand();
         if (itemInHand.getType().isBlock() && itemInHand.getAmount() <= 1) {
             refillItemInHand(p, itemInHand, false, inMainHand);
@@ -24,6 +24,7 @@ public class RefillerListener implements Listener {
 
     @EventHandler
     public void onPlayerInteractEvent(PlayerInteractEvent e) throws InterruptedException {
+        // checks for planting
         if (!e.isBlockInHand() && e.getAction() == Action.RIGHT_CLICK_BLOCK && e.getClickedBlock().getType() == Material.FARMLAND) {
             Player p = e.getPlayer();
             boolean inMainHand = inMainHand(new ItemStack(e.getMaterial()), p);
